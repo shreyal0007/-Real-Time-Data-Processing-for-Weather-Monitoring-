@@ -1,60 +1,48 @@
 import sqlite3
-import pandas as pd
-import matplotlib.pyplot as plt
-from datetime import datetime, timedelta
+from datetime import datetime
 
 DB_NAME = 'weather_data.db'
+conn = sqlite3.connect(DB_NAME)
+c = conn.cursor()
 
-def insert_test_data():
-    """Insert test data into the weather database."""
+
+DB_NAME = 'weather_data.db'
+ALERT_THRESHOLD_TEMP = 35.0 
+
+conn = sqlite3.connect(DB_NAME)
+c = conn.cursor()
+
+def check_thresholds():
+    """Check for temperature alerts."""
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
-
-    # Inserting test data
-    test_data = [
-        ('Delhi', 50.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
-        ('Mumbai', 40.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
-        ('Chennai', 30.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
-    ]
-
-    c.executemany("INSERT INTO weather (city, temperature, timestamp) VALUES (?, ?, ?)", test_data)
-    conn.commit()
-    conn.close()
-
-def plot_weather_trends():
-    """Plot temperature trends for the last 24 hours."""
-    conn = sqlite3.connect(DB_NAME)
-    c = conn.cursor()
-
-    end_time = datetime.now()
-    start_time = end_time - timedelta(days=1)
     
-    # Fetch data for the last 24 hours
-    c.execute("SELECT city, temperature, timestamp FROM weather WHERE timestamp BETWEEN ? AND ?", 
-            (start_time.strftime('%Y-%m-%d %H:%M:%S'), end_time.strftime('%Y-%m-%d %H:%M:%S')))
+    c.execute("SELECT city, temperature, timestamp FROM weather ORDER BY timestamp DESC LIMIT 12")  # Last 12 data points
     data = c.fetchall()
     conn.close()  
 
-    if not data:
-        print("No data for the last 24 hours.")
+    alerts = []
+    
+    # Ensure we have enough data points to check for consecutive readings
+    if len(data) < 2:
+        print("Not enough data to check for temperature thresholds.")
         return
 
-    df = pd.DataFrame(data, columns=['city', 'temp', 'timestamp'])
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
-
-    # Plot temperature trends
-    plt.figure(figsize=(10, 6))
-    for city in df['city'].unique():
-        city_data = df[df['city'] == city]
-        plt.plot(city_data['timestamp'], city_data['temp'], label=city)
+    # Iterate over data in pairs
+    for i in range(0, len(data) - 1, 2):  
+        city = data[i][0]
+        temp_latest = data[i][1]
+        temp_prev = data[i + 1][1]
+        
+        if temp_latest > ALERT_THRESHOLD_TEMP and temp_prev > ALERT_THRESHOLD_TEMP:
+            alerts.append(f"Alert! Temperature in {city} exceeded {ALERT_THRESHOLD_TEMP}°C for two consecutive readings.")
     
-    plt.xlabel('Time')
-    plt.ylabel('Temperature (°C)')
-    plt.title('Temperature Trends for the Last 24 Hours')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+    # Check for any alerts and print them
+    if alerts:
+        for alert in alerts:
+            print(alert)
+    else:
+        print("No threshold breaches detected.")
 
 if __name__ == '__main__':
-    insert_test_data()  
-    plot_weather_trends()  
+    check_thresholds()

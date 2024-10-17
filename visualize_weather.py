@@ -17,7 +17,7 @@ def plot_weather_trends():
     c.execute("SELECT city, temperature, timestamp FROM weather WHERE timestamp BETWEEN ? AND ?", 
               (start_time.strftime('%Y-%m-%d %H:%M:%S'), end_time.strftime('%Y-%m-%d %H:%M:%S')))
     data = c.fetchall()
-    conn.close()  # Close the connection after fetching data
+    conn.close()  
 
     if not data:
         print("No data for the last 24 hours.")
@@ -40,4 +40,4 @@ def plot_weather_trends():
     plt.show()
 
 if __name__ == '__main__':  
-    plot_weather_trends()  # Plot the weather trends
+    plot_weather_trends()  
