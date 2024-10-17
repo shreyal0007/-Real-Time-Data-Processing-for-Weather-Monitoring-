@@ -5,22 +5,6 @@ from datetime import datetime, timedelta
 
 DB_NAME = 'weather_data.db'
 
-def insert_test_data():
-    """Insert test data into the weather database."""
-    conn = sqlite3.connect(DB_NAME)
-    c = conn.cursor()
-
-    # Inserting test data
-    test_data = [
-        ('Delhi', 80.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
-        ('Mumbai', 12.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
-        ('Chennai', 28.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
-    ]
-
-    c.executemany("INSERT INTO weather (city, temperature, timestamp) VALUES (?, ?, ?)", test_data)
-    conn.commit()
-    conn.close()
-
 def plot_weather_trends():
     """Plot temperature trends for the last 24 hours."""
     conn = sqlite3.connect(DB_NAME)
@@ -55,6 +39,5 @@ def plot_weather_trends():
     plt.grid(True)
     plt.show()
 
-if __name__ == '__main__':
-    insert_test_data()  # Insert test data
+if __name__ == '__main__':  
     plot_weather_trends()  # Plot the weather trends

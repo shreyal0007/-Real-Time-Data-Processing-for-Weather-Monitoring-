@@ -12,9 +12,9 @@ def insert_test_data():
 
     # Inserting test data
     test_data = [
-        ('Delhi', 30.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
-        ('Mumbai', 32.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
-        ('Chennai', 28.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
+        ('Delhi', 50.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
+        ('Mumbai', 40.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
+        ('Chennai', 30.0, datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
     ]
 
     c.executemany("INSERT INTO weather (city, temperature, timestamp) VALUES (?, ?, ?)", test_data)
