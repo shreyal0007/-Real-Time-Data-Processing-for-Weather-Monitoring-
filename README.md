@@ -23,7 +23,7 @@ The system utilizes the OpenWeatherMap API. To access the data, you will need to
 ## Project Structure
 The project consists of the following Python files:
 
-- **`fetchweather.py`**: Fetches weather data and stores it in a local SQLite database.
+- **`fetchweather.py`**: Fetches weather data and stores it in a local SQLite database after every 5 minutes.
 - **`displaydata.py`**: Displays the data stored in the SQLite database.
 - **`visualize_weather.py`**: Generates line graphs to show weather trends for all five cities.
 - **`weather_summary.py`**: Summarizes the fetched weather data from all locations.
@@ -35,21 +35,36 @@ The project consists of the following Python files:
 - An OpenWeatherMap API key
 
 
-## Setup And Usage Instructions
-Follow these steps to set up the project:
+# Setup and Usage Instructions
+
+Follow these steps in order to set up the project:
 
 1. **Clone the Repository**:
-2. In the bash run  pip install -r requirements.txt
-3. Fetch Weather Data: Start by running the fetchweather.py file to begin fetching real-time data.
-   python fetchweather.py
-4.Display Stored Data: After fetching the data, run the displaydata.py file to see the data stored in the database.
-   python displaydata.py
-5.Generate Weather Summary: Run the weather_summary.py file to get a summary of the fetched data.
-  python weather_summary.py
-6.Check Alerts: Execute the weather_alert.py file to check for any temperature alerts.
-  python weather_alert.py
-7.Visualize Weather Trends: Finally, run the visualize_weather.py file to visualize the weather trends.
-  python visualize_weather.py
+   - Clone the repository to your local machine.
+
+2. **Install Dependencies**:
+   - Run `pip install -r requirements.txt` in your terminal.
+
+3. **Fetch Weather Data**:
+   - Start by running the `fetchweather.py` file to begin fetching real-time data.
+   - Command: `python fetchweather.py`
+
+4. **Display Stored Data**:
+   - After fetching the data, run the `displaydata.py` file to see the data stored in the database.
+   - Command: `python displaydata.py`
+
+5. **Generate Weather Summary**:
+   - Run the `weather_summary.py` file to get a summary of the fetched data.
+   - Command: `python weather_summary.py`
+
+6. **Check Alerts**:
+   - Execute the `weather_alert.py` file to check for any temperature alerts.
+   - Command: `python weather_alert.py`
+
+7. **Visualize Weather Trends**:
+   - Finally, run the `visualize_weather.py` file to visualize the weather trends.
+   - Command: `python visualize_weather.py`
+
 
 # Future Improvements for Real-Time Weather Monitoring System
 
