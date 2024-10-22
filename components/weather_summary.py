@@ -8,15 +8,15 @@ c = conn.cursor()
 
 def get_daily_summary():
     """Generate daily summary with aggregate calculations."""
-    today = datetime.now().strftime('%Y-%m-%d')
-    
-    # Adjusted SQL query to match the actual column names in the weather table
+    # Use DATE('now', 'localtime') to get today's date in local timezone
     c.execute(f"""
         SELECT city, temperature, weather_condition 
         FROM weather 
-        WHERE DATE(datetime(timestamp, 'unixepoch')) = '{today}'
+        WHERE DATE(datetime(timestamp, 'unixepoch'), 'localtime') = DATE('now', 'localtime')
     """)
     data = c.fetchall()
+    
+    print("Data fetched from database:", data)  # Debugging line
     
     if not data:
         print("No data for today.")
@@ -31,6 +31,7 @@ def get_daily_summary():
     min_temp = df['temperature'].min()
     dominant_weather = df['weather_condition'].mode()[0]  # Most frequent weather condition
     
+    today = datetime.now().strftime('%Y-%m-%d')
     print(f"Daily Summary for {today}")
     print(f"Average Temperature: {avg_temp:.2f}°C")
     print(f"Max Temperature: {max_temp:.2f}°C")

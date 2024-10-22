@@ -61,12 +61,12 @@ def fetch_weather_data():
 # Create the weather table
 create_table()
 
-
+# Schedule the weather data fetch every 5 minutes
 schedule.every(5).minutes.do(fetch_weather_data)
 
 if __name__ == "__main__":
     print("Starting weather data fetcher...")
-    fetch_weather_data()
+    fetch_weather_data()  # Initial fetch
     while True:
         schedule.run_pending()
         time.sleep(1)
